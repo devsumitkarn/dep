@@ -25,3 +25,10 @@
 <script src="{{url('e-sim/dist/js/themes/rubick.js')}}"></script>
 <script src="{{url('e-sim/dist/js/utils/helper.js')}}"></script>
 <script src="{{url('e-sim/dist/js/components/theme-switcher.js')}}"></script>
+<script src="{{ url('e-sim/dist/js/pages/form-validation.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/components/base/highlight.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/vendors/highlight.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/vendors/tab.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/vendors/pristine.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/components/base/code.js') }}"></script>
+<script src="{{ url('e-sim/dist/js/themes/enigma.js') }}"></script>

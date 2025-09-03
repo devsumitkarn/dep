@@ -173,8 +173,5 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ url('e-sim/dist/js/components/base/lucide.js') }}"></script>
     <script src="{{ url('e-sim/dist/js/components/theme-switcher.js') }}"></script> <!-- END: Vendor JS Assets-->
     <!-- BEGIN: Pages, layouts, components JS Assets-->
-    <!-- END: Pages, layouts, components JS Assets-->
 </body>
-
-<!-- Mirrored from midone-html.vercel.app/rubick-side-menu-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Aug 2025 07:34:30 GMT -->
 </html>
