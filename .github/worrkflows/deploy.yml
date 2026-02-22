@@ -5,6 +5,13 @@ on:
     branches:
       - dev   # change to main if needed
       - main   # change to main if needed
+  pull_request:
+      branches:
+        - main
+      types:
+        - opened
+        - synchronize
+        - reopened
 
 jobs:
   deploy:
