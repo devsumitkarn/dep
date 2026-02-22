@@ -1,0 +1,89 @@
+name: 🚀 Deploy Laravel to Hostinger
+
+on:
+  push:
+    branches:
+      - dev   # change to main if needed
+      - main   # change to main if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout Code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, mysql, pdo
+          coverage: none
+
+      # 3️⃣ Install Composer Dependencies
+      - name: Install Composer
+        run: composer install --no-dev --optimize-autoloader
+
+      # 4️⃣ Setup Node (For Vite)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install NPM & Build Assets
+        run: |
+          npm install
+          npm run build
+
+      # 5️⃣ Optimize Laravel
+      - name: Optimize Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      # 6️⃣ Prepare Deployment Structure
+      - name: Prepare Deployment Folders
+        run: |
+          mkdir deploy_root
+          mkdir deploy_public
+
+          # Copy full Laravel app except public folder
+          rsync -av --exclude='public' ./ deploy_root/
+
+          # Copy only public folder contents
+          cp -r public/* deploy_public/
+
+      # 7️⃣ Deploy Laravel Core to /laravel_app
+      - name: Deploy Laravel Core
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: deploy_root/
+          server-dir: /laravel_app/
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules/**
+            tests/**
+            storage/logs/**
+            .env
+
+      # 8️⃣ Deploy Public Folder to /public_html
+      - name: Deploy Public Files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: deploy_public/
+          server-dir: /public_html/
